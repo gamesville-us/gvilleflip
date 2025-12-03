@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GamesVille Flipbook</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+
+body {
+  background:url("bk1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* ---------------- TITLE ---------------- */
+h1 {
+  font-size: 48px;
+  color: #001844;
+  margin-top: 30px;
+  font-weight: 900;
+  opacity: 0;
+  transform: translateY(-50px);
+  animation: showTitle 1.3s ease-out forwards;
+}
+
+@keyframes showTitle {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------- CONTAINER ---------------- */
+.main-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* ---------------- BOOK WRAPPER ---------------- */
+.book-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  transform: scale(0.8);
+  transition: 1s ease-out;
+  margin-top: -10px;
+}
+
+.book-show {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* ---------------- FLIPBOOK ---------------- */
+.flipbook {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.page {
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 1s cubic-bezier(0.45,0.05,0.55,0.95);
+  z-index: 0;
+}
+
+.page:nth-child(1) { z-index: 5; }
+.page:nth-child(2) { z-index: 4; }
+.page:nth-child(3) { z-index: 3; }
+.page:nth-child(4) { z-index: 2; }
+.page:nth-child(5) { z-index: 1; }
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 5px;
+  border: 5px solid #384a7e;
+  background: linear-gradient(90deg,#b2effc,#cbf2fb,#ecfcff,#cbf2fb,#b2effc);
+  overflow: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.page img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.page.flipped {
+  transform: rotateY(-180deg);
+  z-index: 50;
+}
+
+/* ---------------- ARROWS ---------------- */
+.arrow-btn {
+  position: absolute;
+  bottom: 20px;
+  font-size:3rem;
+  cursor: pointer;
+  color: #001844;
+  user-select: none;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+#prevBtn { left: 20px; }
+#nextBtn { right: 20px; }
+
+.arrow-show {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+/* ---------------- MOBILE ---------------- */
+@media (max-width:600px) {
+
+  h1 { font-size: 32px; }
+
+  body {
+    height: 90vh;         /* reduce total height */
+    overflow-y: hidden;
+  }
+
+  .book-wrapper {
+    width: 100%;
+    max-width: 400px;
+    height: 60%;
+    transform: none !important;
+    margin-top: 5px;
+    margin-bottom: 0;
+    position: relative; 
+  }
+
+  .page {
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    border: none !important;
+     background-color: #91e3f3;
+  }
+
+  .back { display: none !important; }
+h2 {
+    font-size: 1.5rem;
+    color: #0f034c;
+    font-weight: bold;
+    margin: 8px 0;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 6px 0;
+  }
+
+  li {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 3px 0;
+    list-style: disc;
+    padding-left: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+
+  table, th, td {
+    border: 1px solid #384a7e;
+    
+  }
+
+  th, td {
+    padding: 6px;
+    text-align: center;
+  }
+
+  .c {
+    background: linear-gradient(90deg,rgb(170, 162, 162),white);
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .arrow-btn {
+    font-size:1rem;               /* smaller arrow size */
+    position: fixed;               /* fixed at bottom */
+    bottom:20%;                  /* distance from bottom of screen */
+    z-index: 999;                  
+    background: rgba(255,255,255,0.8); 
+    padding: 5px 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #000;
+    color: #001844;
+  }
+
+  #prevBtn { left: 40px; }
+  #nextBtn { right: 40px; }
+}
+/* ---------------- BANNER ---------------- */
+.banner-wrapper {
+  position: fixed;
+  top: 18%;
+  right: 10%;
+  width: 400px;
+  background: linear-gradient(90deg,#91e3f3,#e1d6f0,#91e3f3);
+  border: 3px solid #511558;
+  border-radius: 25px;
+  padding: 12px;
+  opacity: 0;
+  transform: translateX(50px);
+}
+.banner-final { animation: showBanner 1.2s ease-out forwards; }
+@keyframes showBanner { to {opacity:1; transform: translateX(0) scale(1);} }
+/* TEXT */
+.banner-text {
+  width: 90%;
+  text-align: center;
+}
+
+.banner-text h2 {
+  margin-top: 0;
+  font-family: "Merriweather", Georgia, serif;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  text-align: center;
+   padding: 0%;
+   margin-top: 0;
+  margin-bottom:5px;
+}
+
+.banner-text p {
+ font-family: Cambria;
+   font-size: clamp(1rem, 3.5vw, 1rem);
+  font-weight: bold;
+  color: rgb(64, 9, 74);
+  width: 100%;
+  display: flex;
+margin-top: 0;
+  margin-bottom:5px;
+  padding: 0%;
+ text-align: left;
+  gap: 10px;
+  word-wrap: break-word;
+  overflow-wrap:anywhere;
+  white-space: normal;
+}
+h2{
+  color:#0f034c;
+  font-weight: bold;
+}
+h3{
+  font-size:1.5rem;
+  font-weight: bold;
+}
+li{
+  font-weight: bold;
+}
+.c{
+  background:linear-gradient(90deg,rgb(170, 162, 162),white);
+ width: 300px;
+ font-weight: bold;
+  margin: 0 auto;
+}
+/* MOBILE VIEW */
+@media (max-width:600px) {
+  .banner-wrapper {
+      width: 95%;          /* almost full width */
+    height: auto;        /* let height adjust to content */
+    top: 15%;  
+    border-radius: 20px;
+    left:2%;
+  }
+  .banner-text {
+    width: 100%;
+    
+  }
+
+  .banner-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .banner-text p {
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+  <h1 id="title">GamesVille</h1>
+
+  <!-- Desktop Flipbook -->
+  <div id="bookWrapperDesktop" class="book-wrapper">
+    <div class="flipbook">
+      <div class="page">
+        <div class="front"><img src="front.jpg"></div>
+        <div class="back"><img src="f1.png"></div>
+      </div>
+      <div class="page">
+        <div class="front"><h2>EXPERIENCE ALL SPORTS<br>ADULT</h2><li>Gym</li><li>Swimming</li><li>Badminton</li>
+        <li>Squash</li><li>Tennis</li><li>Pickle ball</li><li>Table tennis</li><li>Yoga*</li><li>Zumba*</li>
+        <div class="c"><p>Play all sports<br>@<br>Monthly Rs.2,500/-only<br>Annual - Rs.25,000/- only</p></div><h5>OUR OTHER SPORTS</h5><p>Silambam, Karate, Cricket, <br>Football, Chess, Archery</p></div>
+        <div class="back"><h2>EXPERIENCE ALL SPORTS<br>ADULT COACHING</h2><li>Basic - Rs.1000/-</li><li>Intermediate - Rs.1500/-</li><li>Advanced - Rs.2000/-</li><li>Personal Coaching - Rs.3500/-<br>(12 Session)</li>
+        <li>Personal Coaching - Rs.4500/-<br>(20 Session)</li><li>Individual - Rs.7000/-<br>(Separate Timing)</li><div class="c"><p>BOXING:<br>Boxing only - Rs.2500/-<br>All sports+ Boxing = Rs.4000/-<br>Boxing PT = Rs.5000/-</p></div></div>
+      </div>
+      <div class="page">
+        <div class="front"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><li>Badminton</li><li>Yoga</li><li>Pickle ball</li><li>Swimming</li><li>Dance</li>
+          <li>Table Tennis</li><li>Gym</li><li>Boxing (Play on your own)</li><li>Football</li><li>Cricket</li><li>Squash</li><li>Archery</li><li>Tennis</li>
+          <div class="c">Enjoy your favourite sport<br>
+Bonus - Explore other sports<br>
+Monthly - Rs.2,000/- only<br>
+Annual - Rs.20,000/-only</div><p>Weekend Class Monthly 1500/-<br>(Only Saturday and Sunday)</p></div>
+        <div class="back"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><h2>Coaching Fees</h2><h3>Swimming</h3><table border="1" cellspacing="0" cellpadding="10"class="c">
+    <tr>
+        <th></th>
+        <th>1 Month</th>
+        <th>3 Month</th>
+        <th>Annual</th>
+    </tr>
+
+    <tr>
+        <td>Advanced</td>
+        <td>₹1000/-</td>
+        <td>₹7000/-</td>
+        <td>₹30000/-</td>
+    </tr>
+
+    <tr>
+        <td>Sports</td>
+        <td>₹1500/-</td>
+        <td>₹9000/-</td>
+        <td>₹35000/-</td>
+    </tr>
+</table>
+</div>
+      </div>
+      <!-- PAGE 4 -->
+   <div class="page">
+        <div class="front"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><h2>Coaching Fees</h2><h3>Squash</h3><table border="1" cellspacing="0" cellpadding="10"class="c">
+    <tr>
+        <th></th>
+        <th>1 Month</th>
+        <th>Annual</th>
+    </tr>
+
+    <tr>
+        <td>Beginner</td>
+        <td>₹500/-</td>
+        <td>₹25000/-</td>
+    </tr>
+
+    <tr>
+        <td>Advanced</td>
+        <td>₹1500/-</td>
+        <td>₹35000/-</td>
+    </tr>
+    <tr>
+        <td>Intermediate</td>
+        <td>₹2500/-</td>
+        <td>₹45000/-</td>
+    </tr>
+    <tr>
+        <td>Sports Coaching</td>
+        <td>₹4000/-</td>
+        <td>₹60000/-</td>
+    </tr>
+</table></div>
+        <div class="back"><img src="f7.jpg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Flipbook -->
+  <div id="bookWrapperMobile" class="book-wrapper" style="display:none;">
+    <div class="flipbook">
+         <!-- PAGE 1 -->
+      <div class="page"><img src="front.jpg"></div>
+       <!-- PAGE 2 -->
+      <div class="page"><img src="f1.png"></div>
+      <!-- PAGE 3 -->
+       <div class="page"><h2>EXPERIENCE ALL SPORTS<br>ADULT</h2><li>Gym</li><li>Swimming</li><li>Badminton</li>
+        <li>Squash</li><li>Tennis</li><li>Pickle ball</li><li>Table tennis</li><li>Yoga*</li><li>Zumba*</li>
+        <div class="c"><p>Play all sports<br>@<br>Monthly Rs.2,500/-only<br>Annual - Rs.25,000/- only</p></div><h5>OUR OTHER SPORTS</h5><p>Silambam, Karate, Cricket, <br>Football, Chess, Archery</p></div>
+      <!-- PAGE 4 --> <div class="page"><h2>EXPERIENCE ALL SPORTS<br>ADULT COACHING</h2><li>Basic - Rs.1000/-</li><li>Intermediate - Rs.1500/-</li><li>Advanced - Rs.2000/-</li><li>Personal Coaching - Rs.3500/-<br>(12 Session)</li>
+        <li>Personal Coaching - Rs.4500/-<br>(20 Session)</li><li>Individual - Rs.7000/-<br>(Separate Timing)</li><div class="c"><p>BOXING:<br>Boxing only - Rs.2500/-<br>All sports+ Boxing = Rs.4000/-<br>Boxing PT = Rs.5000/-</p></div></div>
+       <!-- PAGE 5 --><div class="page"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><li>Badminton</li><li>Yoga</li><li>Pickle ball</li><li>Swimming</li><li>Dance</li>
+          <li>Table Tennis</li><li>Gym</li><li>Boxing (Play on your own)</li><li>Football</li><li>Cricket</li><li>Squash</li><li>Archery</li><li>Tennis</li>
+          <div class="c">Enjoy your favourite sport<br>
+Bonus - Explore other sports<br>
+Monthly - Rs.2,000/- only<br>
+Annual - Rs.20,000/-only</div><p>Weekend Class Monthly 1500/-<br>(Only Saturday and Sunday)</p></div>
+<!-- PAGE 6 -->
+       <div class="page"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><h2>Coaching Fees</h2><h3>Swimming</h3><table border="1" cellspacing="0" cellpadding="10"class="c">
+    <tr>
+        <th></th>
+        <th>1 Month</th>
+        <th>3 Month</th>
+        <th>Annual</th>
+    </tr>
+
+    <tr>
+        <td>Advanced</td>
+        <td>₹1000/-</td>
+        <td>₹7000/-</td>
+        <td>₹30000/-</td>
+    </tr>
+
+    <tr>
+        <td>Sports</td>
+        <td>₹1500/-</td>
+        <td>₹9000/-</td>
+        <td>₹35000/-</td>
+    </tr>
+</table>
+</div>
+<!-- PAGE 7 -->
+        <div class="page"><h2>EXPERIENCE ALL SPORTS<br>CHILDREN <em>(Upto 12th Std)</em></h2><h2>Coaching Fees</h2><h3>Squash</h3><table border="1" cellspacing="0" cellpadding="10"class="c">
+    <tr>
+        <th></th>
+        <th>1 Month</th>
+        <th>Annual</th>
+    </tr>
+
+    <tr>
+        <td>Beginner</td>
+        <td>₹500/-</td>
+        <td>₹25000/-</td>
+    </tr>
+
+    <tr>
+        <td>Advanced</td>
+        <td>₹1500/-</td>
+        <td>₹35000/-</td>
+    </tr>
+    <tr>
+        <td>Intermediate</td>
+        <td>₹2500/-</td>
+        <td>₹45000/-</td>
+    </tr>
+    <tr>
+        <td>Sports Coaching</td>
+        <td>₹4000/-</td>
+        <td>₹60000/-</td>
+    </tr>
+</table></div>
+ <!-- PAGE 8-->
+         <div class="page"><img src="f7.jpg"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Arrows -->
+<div id="prevBtn" class="arrow-btn"><i class="fa fa-chevron-left"></i></div>
+<div id="nextBtn" class="arrow-btn"><i class="fa fa-chevron-right"></i></div>
+<div class="banner-wrapper" id="banner">
+  <div class="banner-text">
+    <h2 class="animate-character">Contact Us</h2>
+        <p><i class="fa fa-map-marker"style="color:blue;padding-right:3px;"></i>4/96/4/1, Machado Nagar, Ettayapuram Road, Sankaraperi Village, Tuticorin-628 002.</p>
+          <p><i class="fa fa-phone"style="color:green;padding-right:3px;"></i> 0461 2903901<br>+91 85259 32290 <br> +91 98439 99297</p>
+           <p>
+<p>
+    <i class="fa fa-envelope" style="color:red;padding-right:3px;"></i>
+    <a href="mailto:gamesvillesportsacademy@gmail.com">
+        gamesvillesportsacademy@gmail.com
+    </a>
+</p>
+
+<p>
+    <i class="fa fa-globe" aria-hidden="true" style="color:blue;padding-right:3px;"></i>
+    <a href="https://gamesville.co.in" target="_blank">
+        www.gamesville.co.in
+    </a>
+</p>
+
+<p>
+    <i class="fa fa-instagram" aria-hidden="true" style="color:rgb(190, 12, 190);padding-right:3px;"></i>
+    <a href="https://instagram.com/gamesvillethoothukudi" target="_blank">
+        www.instagram.com/gamesvillethoothukudi
+    </a>
+</p>
+
+<p>
+    <i class="fa fa-facebook-square" aria-hidden="true" style="color:blue;padding-right:3px;"></i>
+    <a href="https://facebook.com/gamesville" target="_blank">
+        www.facebook.com/gamesville
+    </a>
+</p>
+<img src="b6.jpeg" class="ornate-svg-banner" style="width:60%; max-width:300px; border-radius:15px; box-shadow:0 0 12px rgba(0,0,0,0.3);margin-left:20px;">
+  </div>
+</div>
+<script>
+let currentPage = 0;
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const banner = document.getElementById("banner");
+let pages, activeWrapper;
+
+/* ---------------- DEVICE CHECK ---------------- */
+function detectDevice() {
+  if (window.innerWidth <= 600) {
+    activeWrapper = document.getElementById('bookWrapperMobile');
+    document.getElementById('bookWrapperMobile').style.display = 'flex';
+    document.getElementById('bookWrapperDesktop').style.display = 'none';
+    // Show only first page initially
+    pages = activeWrapper.querySelectorAll('.page');
+    pages.forEach((p, i) => p.style.display = i === 0 ? 'block' : 'none');
+  } else {
+    activeWrapper = document.getElementById('bookWrapperDesktop');
+    document.getElementById('bookWrapperDesktop').style.display = 'flex';
+    document.getElementById('bookWrapperMobile').style.display = 'none';
+    pages = activeWrapper.querySelectorAll('.page');
+    pages.forEach(p => p.classList.remove('flipped'));
+  }
+  currentPage = 0;
+  updateArrows();
+}
+
+/* ---------------- ARROW UPDATE ---------------- */
+function updateArrows() {
+  if (banner.classList.contains("banner-final")) {
+    // Banner visible → hide both arrows
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    return;
+  }
+
+  // Normal behavior
+  prevBtn.style.display = currentPage === 0 ? 'none' : 'block';
+
+  if (window.innerWidth <= 600) {
+    nextBtn.style.display = currentPage < pages.length ? 'block' : 'none';
+  } else {
+    nextBtn.style.display = currentPage >= pages.length ? 'none' : 'block';
+  }
+}
+
+
+
+/* ---------------- PAGE NAVIGATION ---------------- */
+function goNext() {
+  if (window.innerWidth <= 600) {
+   if (currentPage < pages.length - 1) {
+      pages[currentPage].style.display = 'none';
+      currentPage++;
+      pages[currentPage].style.display = 'block';
+    } else if (currentPage === pages.length - 1) {
+      // Hide last page immediately
+      pages[currentPage].style.display = 'none';
+      // Hide NEXT button
+      nextBtn.style.display = 'none';
+      // Show banner after delay
+      setTimeout(() => {
+        banner.classList.add("banner-final");
+      }, 500); // change delay as needed (ms)
+      currentPage++; // mark that user finished
+    }
+  } else {
+    if (currentPage < pages.length) {
+      pages[currentPage].classList.add('flipped');
+      currentPage++;
+      if (currentPage === pages.length) {
+        setTimeout(() => {
+          banner.classList.add("banner-final");
+        }, 1000);
+      }
+    }
+  }
+  updateArrows();
+}
+
+function goPrev() {
+  if (currentPage <= 0) return;
+ /* ---------- MOBILE VIEW ---------- */
+if (window.innerWidth <= 600) {
+
+    // Remove banner if visible (but DO NOT stop page movement)
+    if (banner.classList.contains("banner-final")) {
+        banner.classList.remove("banner-final");
+    }
+
+    // Now move to previous page
+    currentPage--;
+    pages[currentPage].style.display = 'block';
+}
+ else {
+    currentPage--;
+    pages[currentPage].classList.remove('flipped');
+  }
+
+  // Remove banner if we go back
+  banner.classList.remove("banner-final");
+  updateArrows();
+}
+
+/* ---------------- EVENTS ---------------- */
+nextBtn.onclick = goNext;
+prevBtn.onclick = goPrev;
+window.addEventListener('resize', detectDevice);
+
+detectDevice();
+
+/* ---------------- SHOW BOOK AFTER TITLE ANIMATION ---------------- */
+setTimeout(() => {
+  document.getElementById('bookWrapperDesktop').classList.add('book-show');
+  document.getElementById('bookWrapperMobile').classList.add('book-show');
+  nextBtn.classList.add('arrow-show');
+  prevBtn.classList.add('arrow-show');
+}, 1400);
+</script>
+
+</body>
+</html>
